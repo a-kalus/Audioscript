@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/colorBackground"
+    android:fillViewport="false"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:weightSum="12"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+        <TextView
+            android:id="@+id/titleTextField"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="72dp"
+            android:layout_marginBottom="32dp"
+            android:elevation="1dp"
+            android:text="AudioScript"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:textSize="42dp"
+            android:textStyle="italic" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/titleTextField"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="15dp">
+
+
+            <TextView
+                android:id="@+id/fileSelectedInfoText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/openImageButton"
+                android:layout_marginTop="12dp"
+                android:text="No file selected!"
+                android:textColor="@color/common_google_signin_btn_text_dark"
+                android:textStyle="italic" />
+
+
+            <ImageView
+                android:id="@+id/selectedImageDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_centerHorizontal="true"
+                android:animateLayoutChanges="true" />
+
+            <TextView
+                android:id="@+id/translatedTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/selectedImageDisplay"
+                android:animateLayoutChanges="true"
+                android:fontFamily="sans-serif-light" />
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/lecture_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+            </FrameLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom|end"
+            android:gravity="bottom|center_horizontal"
+            android:orientation="horizontal">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/openImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                app:srcCompat="@android:drawable/ic_menu_add" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/playSpeechButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                app:srcCompat="@android:drawable/ic_media_play"
+                android:focusable="true"
+                android:soundEffectsEnabled="false"/>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

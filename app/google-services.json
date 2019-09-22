@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "24592027043",
+    "firebase_url": "https://audioscript-302ec.firebaseio.com",
+    "project_id": "audioscript-302ec",
+    "storage_bucket": "audioscript-302ec.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:24592027043:android:22a98b13a63b4c7caf9e16",
+        "android_client_info": {
+          "package_name": "com.example.audioscript"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "24592027043-tsi11e7etcef9rph1dbafs8psqc7836q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQWq2R_UtQ3yRSWQVE9XFUCelzcz4XTfY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "24592027043-tsi11e7etcef9rph1dbafs8psqc7836q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
