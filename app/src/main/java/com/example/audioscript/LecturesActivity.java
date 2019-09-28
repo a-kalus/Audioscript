@@ -31,6 +31,7 @@ import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 
 import net.gotev.speech.Speech;
+import net.gotev.speech.TextToSpeechCallback;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -43,7 +44,6 @@ public class LecturesActivity extends AppCompatActivity {
     private LectureItem activeLecture;
     private LectureAdapter lectureAdapter;
 
-    private ArrayList<Course> courses = new ArrayList();
     private Course activeCourse;
 
 
@@ -57,6 +57,8 @@ public class LecturesActivity extends AppCompatActivity {
     private TextView translatedTextView;
     private TextView fileInfoText;
     private RecyclerView lectureListView;
+    private FloatingActionButton playButton;
+    private boolean speaking =false;
 
 
     @Override
@@ -64,9 +66,8 @@ public class LecturesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final FloatingActionButton playButton = (FloatingActionButton) findViewById(R.id.playSpeechButton);
+        playButton = (FloatingActionButton) findViewById(R.id.playSpeechButton);
         final FloatingActionButton openImage = (FloatingActionButton) findViewById(R.id.openImageButton);
-
         activeCourse = (Course) getIntent().getSerializableExtra("course");
 
         setupView();
@@ -77,11 +78,12 @@ public class LecturesActivity extends AppCompatActivity {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (activeLecture == null) {
-                    activateLectureAtPos(0);
+                if(!speaking) {
+                    playSpeech();
+                } else {
+                    Speech.getInstance().stopTextToSpeech();
+                    onSpeechStop();
                 }
-                Speech.getInstance().say(activeLecture.getContent());
-
             }
         });
 
@@ -101,6 +103,41 @@ public class LecturesActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void playSpeech() {
+        if (lectures.size()>0) {
+            if (activeLecture == null) {
+                activateLectureAtPos(0);
+            }
+            if (activeLecture != null) {
+                Speech.getInstance().say(activeLecture.getContent(),new TextToSpeechCallback() {
+                    @Override
+                    public void onStart() {
+                        playButton.setImageResource(android.R.drawable.ic_media_pause);
+                        speaking =true;
+                        Log.i("speech", "speech started");
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                        onSpeechStop();
+                        Log.i("speech", "speech completed");
+                    }
+
+                    @Override
+                    public void onError() {
+                        Log.i("speech", "speech error");
+                    }
+                });
+
+            }
+        }
+    }
+
+    private void onSpeechStop() {
+        playButton.setImageResource(android.R.drawable.ic_media_play);
+        speaking = false;
     }
 
     private void setupView() {
@@ -165,6 +202,7 @@ public class LecturesActivity extends AppCompatActivity {
                 Log.d("RecyclerView", "onClick：" + lectures.get(position));
                 // Speech.getInstance().say(lectures.get(position).getContent());
                 activateLectureAtPos(position);
+                playSpeech();
             }
         });
 
