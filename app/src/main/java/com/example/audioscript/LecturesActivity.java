@@ -64,7 +64,7 @@ public class LecturesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.lecture_list_activity);
 
         playButton = (FloatingActionButton) findViewById(R.id.playSpeechButton);
         final FloatingActionButton openImage = (FloatingActionButton) findViewById(R.id.openImageButton);
@@ -141,7 +141,7 @@ public class LecturesActivity extends AppCompatActivity {
     }
 
     private void setupView() {
-        selectedImageDisplay = (ImageView) findViewById(R.id.selectedImageDisplay);
+        selectedImageDisplay = (ImageView) findViewById(R.id.logoImageDisplay);
         translatedTextView = (TextView) findViewById(R.id.translatedTextView);
         fileInfoText = (TextView) findViewById(R.id.fileSelectedInfoText);
         lectureListView = (RecyclerView) findViewById(R.id.lecture_list);

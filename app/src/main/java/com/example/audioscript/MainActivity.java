@@ -4,14 +4,9 @@ package com.example.audioscript;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.provider.MediaStore;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -73,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupView() {
-        ImageView selectedImageDisplay = (ImageView) findViewById(R.id.selectedImageDisplay);
+        ImageView selectedImageDisplay = (ImageView) findViewById(R.id.logoImageDisplay);
         TextView translatedTextView = (TextView) findViewById(R.id.translatedTextView);
         TextView fileInfoText = (TextView) findViewById(R.id.fileSelectedInfoText);
         courseListView = (RecyclerView) findViewById(R.id.lecture_list);
@@ -87,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
         courseAdapter = new CourseAdapter(this, courses);
         courseListView.setLayoutManager(new LinearLayoutManager(this));
         courseListView.setAdapter(courseAdapter);
-
 
         courseAdapter.setOnItemClickListener(new ItemClickListener() {
             @Override

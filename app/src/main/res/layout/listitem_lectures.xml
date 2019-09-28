@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/listitem_lectures"
     android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
-    android:foreground="?android:attr/selectableItemBackground"
-    android:clickable="true"
-    android:focusable="true"
+    android:layout_marginBottom="@dimen/activity_vertical_margin"
     app:cardCornerRadius="@dimen/activity_vertical_margin"
     app:cardElevation="@dimen/activity_vertical_margin"
+    android:clickable="true"
+    android:focusable="true"
+
+    android:dividerHeight="4dp"
     android:padding="12dp">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorCardBackground">
+
+
 
     <TextView
         android:id="@+id/item_name"
@@ -21,7 +31,10 @@
         android:gravity="center_vertical"
         android:padding="5dp"
         android:singleLine="true"
-        android:textSize="16sp" />
+        android:textColor="@color/colorPrimaryExtraDark"
+        android:textSize="21sp"
+        android:textStyle="bold"
+       />
 
     <TextView
         android:id="@+id/item_date"
@@ -31,6 +44,9 @@
         android:layout_alignParentRight="true"
         android:gravity="center_vertical"
         android:padding="5dp"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:textColor="@color/white"/>
 
-</RelativeLayout>
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

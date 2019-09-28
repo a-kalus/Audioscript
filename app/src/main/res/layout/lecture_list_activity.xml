@@ -9,38 +9,20 @@
     android:fillViewport="false"
     android:orientation="vertical"
     android:padding="10dp"
+    tools:context=".LecturesActivity"
     >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity">
-        <ImageView
-            android:id="@+id/logoImageDisplay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher_foreground"
-            android:layout_centerHorizontal="true"
-            android:animateLayoutChanges="true" />
+
         <FrameLayout
             android:id="@android:id/tabcontent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"/>
-
-        <TextView
-            android:id="@+id/titleTextField"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="72dp"
-            android:layout_marginBottom="32dp"
-            android:elevation="1dp"
-            android:text="Audioscript"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="42dp"
-            android:textStyle="italic" />
 
 
         <RelativeLayout
