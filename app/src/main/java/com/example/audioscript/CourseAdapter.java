@@ -2,11 +2,15 @@ package com.example.audioscript;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -32,12 +36,11 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
         return viewHolder;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
-    {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView name;
-        TextView date;
+        ImageButton moreButton;
 
-        public ViewHolder(View v) {
+        public ViewHolder(final View v) {
             super(v);
 /*
             v.setOnClickListener(new View.OnClickListener() {
@@ -46,9 +49,16 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
                     Log.d("RecyclerView", "onClick：" + getAdapterPosition());
                 }
             });
-*/          v.setOnClickListener(this);
+*/
+            v.setOnClickListener(this);
             name = (TextView) v.findViewById(R.id.item_name);
-            date = (TextView) v.findViewById(R.id.item_date);
+            moreButton = (ImageButton) v.findViewById(R.id.options_btn);
+            moreButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    itemClickListener.onItemOptionsClick(getAdapterPosition(), view);
+                }
+            });
 
         }
 
@@ -60,7 +70,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
         }
     }
 
-    public void setOnItemClickListener(ItemClickListener itemClickListener){
+    public void setOnItemClickListener(ItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
     }
 
@@ -69,7 +79,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
         Course course = courseList.get(position);
 
         holder.name.setText(course.getCourseName());
-        holder.date.setText(""+course.getId());
+
     }
 
     @Override

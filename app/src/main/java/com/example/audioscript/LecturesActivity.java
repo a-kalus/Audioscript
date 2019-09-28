@@ -9,6 +9,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -203,6 +206,24 @@ public class LecturesActivity extends AppCompatActivity {
                 // Speech.getInstance().say(lectures.get(position).getContent());
                 activateLectureAtPos(position);
                 playSpeech();
+            }
+
+            @Override
+            public void onItemOptionsClick(final int pos, View v) {
+                PopupMenu popup = new PopupMenu(LecturesActivity.this, v);
+                MenuInflater inflater = popup.getMenuInflater();
+                inflater.inflate(R.menu.options_menu, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if (item.getItemId()==R.id.menu1){
+                            db.removeLecture(lectures.get(pos));
+                            updateList();
+                        }
+                        return false;
+                    }
+                });
+                popup.show();
             }
         });
 

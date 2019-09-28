@@ -9,7 +9,6 @@
     app:cardElevation="@dimen/activity_vertical_margin"
     android:clickable="true"
     android:focusable="true"
-
     android:dividerHeight="4dp"
     android:padding="12dp">
 
@@ -17,8 +16,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorCardBackground">
-
+        android:background="@color/colorCardBackground"
+       >
 
 
     <TextView
@@ -41,12 +40,24 @@
         android:layout_width="85dp"
         android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_toStartOf="@id/options_btn"
         android:gravity="center_vertical"
         android:padding="5dp"
+        android:background="@color/colorCardBackground"
         android:textSize="14sp"
         android:textColor="@color/white"/>
-
+        <ImageButton
+            android:id="@+id/options_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@color/colorCardBackgroundOld"
+            android:layout_gravity="end"
+            android:layout_alignParentEnd="true"
+            android:gravity="center_vertical"
+           android:src="@drawable/ic_more_vert_black_24dp"
+            />
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

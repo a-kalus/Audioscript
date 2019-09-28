@@ -189,6 +189,15 @@ public class ASDatabase {
         return courses;
     }
 
+    public void removeCourse(Course course) {
+        ArrayList<LectureItem> lecturesToRemove = getAllLecturesOfCourse(course.getCourseName(), course.getId());
+        for (int i =0; i<lecturesToRemove.size();i++){
+            removeLecture(lecturesToRemove.get(i));
+        }
+        db.delete(COURSES_TABLE, KEY_ID + " = ?",
+                new String[] { String.valueOf(course.getId()) });
+    }
+
     private class ASDBOpenHelper extends SQLiteOpenHelper {
         private static final String CREATE_LECTURES = "create table "
                 + LECTURES_TABLE + " (" + KEY_ID

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -49,7 +50,13 @@ public class LectureAdapter extends RecyclerView.Adapter<LectureAdapter.ViewHold
 */          v.setOnClickListener(this);
             name = (TextView) v.findViewById(R.id.item_name);
             date = (TextView) v.findViewById(R.id.item_date);
-
+            ImageButton moreButton = (ImageButton) v.findViewById(R.id.options_btn);
+            moreButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    itemClickListener.onItemOptionsClick(getAdapterPosition(), view);
+                }
+            });
         }
 
         @Override
