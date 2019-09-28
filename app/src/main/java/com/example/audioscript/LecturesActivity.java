@@ -73,7 +73,7 @@ public class LecturesActivity extends AppCompatActivity {
         Speech.init(this, getPackageName());
         initDB();
         initLectureAdapter();
-        updateList(activeCourse.getCourseName());
+        updateList();
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -178,14 +178,14 @@ public class LecturesActivity extends AppCompatActivity {
         db.open();
     }
 
-    private void updateList(String course) {
-        Log.d("updatelist", "Course：" + course);
+    private void updateList() {
+        Log.d("updatelist", "Course：" + activeCourse);
         lectures.clear();
-        if (course == null) {
+        if (activeCourse.getCourseName() == null) {
             lectures.addAll(db.getAllLectures());
         } else {
-            lectures.addAll(db.getAllLecturesOfCourse(course));
-            Log.d("updatelist", "size of course named" + course + ": " + db.getAllLecturesOfCourse(course).size());
+            lectures.addAll(db.getAllLecturesOfCourse(activeCourse.getCourseName(), activeCourse.getId()));
+            Log.d("updatelist", "size of course named" + activeCourse + ": " + db.getAllLecturesOfCourse(activeCourse.getCourseName(), activeCourse.getId()).size());
         }
         lectureAdapter.notifyDataSetChanged();
     }
@@ -207,7 +207,7 @@ public class LecturesActivity extends AppCompatActivity {
             return;
         }
         db.insertLecture(newLecture, activeCourse.getId());
-        updateList(activeCourse.getCourseName());
+        updateList();
         Toast.makeText(this, "File added: " + name,
                 Toast.LENGTH_SHORT).show();
     }

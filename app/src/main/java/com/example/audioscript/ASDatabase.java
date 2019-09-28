@@ -66,13 +66,13 @@ public class ASDatabase {
         newLectureValues.put(KEY_CONTENT, item.getContent());
         newLectureValues.put(KEY_DATE, item.getFormattedDate());
 
-        
+
         long lecture_id = db.insert(LECTURES_TABLE, null, newLectureValues);
-        
+
         insertLectureCourse(lecture_id, course_id, item.getFormattedDate());
-        
+
         return lecture_id;
-        
+
     }
 
     public long insertLectureCourse(long lecture_id, long course_id, String date) {
@@ -105,8 +105,8 @@ public class ASDatabase {
 
     public ArrayList<LectureItem> getAllLectures() {
         ArrayList<LectureItem> items = new ArrayList<LectureItem>();
-        Cursor cursor = db.query(LECTURES_TABLE, new String[] { KEY_ID,
-                KEY_LECTURE_NAME, KEY_CONTENT, KEY_DATE }, null, null, null, null, null);
+        Cursor cursor = db.query(LECTURES_TABLE, new String[]{KEY_ID,
+                KEY_LECTURE_NAME, KEY_CONTENT, KEY_DATE}, null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
                 String name = cursor.getString(COLUMN_LECTURE_NAME_INDEX);
@@ -128,7 +128,7 @@ public class ASDatabase {
                 Calendar cal = Calendar.getInstance(Locale.GERMAN);
                 cal.setTime(formatedDate);
 
-                items.add(new LectureItem(name, content,cal.get(Calendar.DAY_OF_MONTH),
+                items.add(new LectureItem(name, content, cal.get(Calendar.DAY_OF_MONTH),
                         cal.get(Calendar.MONTH), cal.get(Calendar.YEAR)));
 
             } while (cursor.moveToNext());
@@ -136,13 +136,14 @@ public class ASDatabase {
         return items;
     }
 
-    public ArrayList<LectureItem> getAllLecturesOfCourse(String course) {
+    public ArrayList<LectureItem> getAllLecturesOfCourse(String courseName, int courseID) {
         ArrayList<LectureItem> items = new ArrayList<LectureItem>();
 
         String query = "SELECT * FROM " + LECTURES_TABLE + " l, "
                 + COURSES_TABLE + " c, " + LECTURE_COURSES_TABLE + " lc WHERE c."
-                + KEY_COURSE_NAME + " = '" + course + "'" + " AND c." + KEY_ID
-                + " = " + "lc." + KEY_COURSE_ID + " AND l." + KEY_ID + " = "
+                + KEY_COURSE_NAME + " = '" + courseName + "'" + " AND c." + KEY_ID
+                + " = " + "lc." + KEY_COURSE_ID + " AND c." + KEY_ID + " = '"
+                + courseID + "'" + " AND l." + KEY_ID + " = "
                 + "lc." + KEY_LECTURE_ID;
 
         Cursor cursor = db.rawQuery(query, null);
@@ -166,7 +167,7 @@ public class ASDatabase {
                 Calendar cal = Calendar.getInstance(Locale.GERMAN);
                 cal.setTime(formatedDate);
 
-                items.add(new LectureItem(name, content,cal.get(Calendar.DAY_OF_MONTH),
+                items.add(new LectureItem(name, content, cal.get(Calendar.DAY_OF_MONTH),
                         cal.get(Calendar.MONTH), cal.get(Calendar.YEAR)));
 
             } while (cursor.moveToNext());
@@ -181,7 +182,7 @@ public class ASDatabase {
 
         if (cursor.moveToFirst()) {
             do {
-                Course course = new Course(cursor.getInt((cursor.getColumnIndex(KEY_ID))),cursor.getString(cursor.getColumnIndex(KEY_COURSE_NAME)));
+                Course course = new Course(cursor.getInt((cursor.getColumnIndex(KEY_ID))), cursor.getString(cursor.getColumnIndex(KEY_COURSE_NAME)));
                 courses.add(course);
             } while (cursor.moveToNext());
         }
