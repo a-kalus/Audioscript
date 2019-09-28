@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -69,14 +70,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
     private void setupView() {
         ImageView selectedImageDisplay = (ImageView) findViewById(R.id.selectedImageDisplay);
         TextView translatedTextView = (TextView) findViewById(R.id.translatedTextView);
         TextView fileInfoText = (TextView) findViewById(R.id.fileSelectedInfoText);
-        courseListView = (RecyclerView) findViewById(R.id.course_list);
+        courseListView = (RecyclerView) findViewById(R.id.lecture_list);
         courseListView.setHasFixedSize(true);
 
     }

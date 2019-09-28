@@ -20,7 +20,6 @@ public class Course  implements Serializable {
         this.course_name = name;
     }
 
-    // getter
     public int getId() {
         return this.id;
     }

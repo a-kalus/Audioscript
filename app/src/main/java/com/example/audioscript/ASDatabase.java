@@ -195,12 +195,10 @@ public class ASDatabase {
                 + " text not null, " + KEY_CONTENT
                 + " text not null, " + KEY_DATE + " text);";
 
-        // Tag table create statement
         private static final String CREATE_COURSES_TABLE = "create table " + COURSES_TABLE
                 + " (" + KEY_ID + " integer primary key," + KEY_COURSE_NAME + " text,"
                 + KEY_DATE + " text);";
 
-        // todo_tag table create statement
         private static final String CREATE_LECTURE_COURSES_TABLE = "create table "
                 + LECTURE_COURSES_TABLE + " (" + KEY_ID + " integer primary key,"
                 + KEY_LECTURE_ID + " integer," + KEY_COURSE_ID + " integer,"

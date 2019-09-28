@@ -1,7 +1,6 @@
 package com.example.audioscript;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,8 +47,8 @@ public class LectureAdapter extends RecyclerView.Adapter<LectureAdapter.ViewHold
                 }
             });
 */          v.setOnClickListener(this);
-            name = (TextView) v.findViewById(R.id.lecture_name);
-            date = (TextView) v.findViewById(R.id.lecture_date);
+            name = (TextView) v.findViewById(R.id.item_name);
+            date = (TextView) v.findViewById(R.id.item_date);
 
         }
 

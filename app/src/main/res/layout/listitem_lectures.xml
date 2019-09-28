@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/listitem_lectures"
     android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardCornerRadius="@dimen/activity_vertical_margin"
+    app:cardElevation="@dimen/activity_vertical_margin"
     android:padding="12dp">
 
     <TextView
-        android:id="@+id/lecture_name"
+        android:id="@+id/item_name"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
@@ -18,7 +24,7 @@
         android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/lecture_date"
+        android:id="@+id/item_date"
         android:layout_width="85dp"
         android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"

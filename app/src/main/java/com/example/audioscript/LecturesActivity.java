@@ -115,7 +115,7 @@ public class LecturesActivity extends AppCompatActivity {
     private void activateLectureAtPos(int position) {
         if (lectures.get(position) != null) {
             activeLecture = lectures.get(position);
-            fileInfoText.setText("File selected: " + activeLecture.getName());
+            fileInfoText.setText(activeLecture.getName());
         }
     }
 

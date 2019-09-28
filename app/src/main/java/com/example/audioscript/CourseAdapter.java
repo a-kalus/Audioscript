@@ -47,8 +47,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
                 }
             });
 */          v.setOnClickListener(this);
-            name = (TextView) v.findViewById(R.id.lecture_name);
-            date = (TextView) v.findViewById(R.id.lecture_date);
+            name = (TextView) v.findViewById(R.id.item_name);
+            date = (TextView) v.findViewById(R.id.item_date);
 
         }
 
@@ -69,7 +69,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
         Course course = courseList.get(position);
 
         holder.name.setText(course.getCourseName());
-        holder.date.setText(course.getCourseName());
+        holder.date.setText(""+course.getId());
     }
 
     @Override
