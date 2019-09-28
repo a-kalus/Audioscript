@@ -1,7 +1,6 @@
 package com.example.audioscript;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,20 +11,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class LectureAdapter extends RecyclerView.Adapter<LectureAdapter.ViewHolder> {
+public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder> {
     private LayoutInflater inflater;
-    private List<LectureItem> lectureList;
+    private List<Course> courseList;
     private Context context;
     private ItemClickListener itemClickListener;
 
 
-    public LectureAdapter(Context context, List list) {
+    public CourseAdapter(Context context, List list) {
         inflater = LayoutInflater.from(context);
         this.context = context;
-        lectureList = list;
+        courseList = list;
     }
 
-    public LectureAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CourseAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View lectureView = inflater.inflate(R.layout.listitem_lectures, parent, false);
 
@@ -64,17 +63,17 @@ public class LectureAdapter extends RecyclerView.Adapter<LectureAdapter.ViewHold
     public void setOnItemClickListener(ItemClickListener itemClickListener){
         this.itemClickListener = itemClickListener;
     }
-    
-    @Override
-    public void onBindViewHolder(@NonNull LectureAdapter.ViewHolder holder, int position) {
-        LectureItem item = lectureList.get(position);
 
-        holder.name.setText(item.getName());
-        holder.date.setText(item.getFormattedDate());
+    @Override
+    public void onBindViewHolder(@NonNull CourseAdapter.ViewHolder holder, int position) {
+        Course course = courseList.get(position);
+
+        holder.name.setText(course.getCourseName());
+        holder.date.setText(course.getCourseName());
     }
 
     @Override
     public int getItemCount() {
-        return lectureList.size();
+        return courseList.size();
     }
 }

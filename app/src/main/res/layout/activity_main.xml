@@ -17,6 +17,22 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
+        <FrameLayout
+            android:id="@android:id/tabcontent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/course_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </FrameLayout>
+
         <TextView
             android:id="@+id/titleTextField"
             android:layout_width="wrap_content"
