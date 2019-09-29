@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MenuInflater;
@@ -21,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,10 +39,14 @@ import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 import net.gotev.speech.Speech;
 import net.gotev.speech.TextToSpeechCallback;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 public class LecturesActivity extends AppCompatActivity {
 
@@ -61,8 +68,8 @@ public class LecturesActivity extends AppCompatActivity {
     private TextView fileInfoText;
     private RecyclerView lectureListView;
     private FloatingActionButton playButton;
-    private boolean speaking =false;
-
+    private boolean speaking = false;
+    File photoFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +88,7 @@ public class LecturesActivity extends AppCompatActivity {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!speaking) {
+                if (!speaking) {
                     playSpeech();
                 } else {
                     Speech.getInstance().stopTextToSpeech();
@@ -94,31 +101,62 @@ public class LecturesActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //debug
-
                 Log.d(TAG, "onClick: selecting image");
 
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
-                intent.setType("image/*");
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
+                List<Intent> intentList = new ArrayList();
+                Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                galleryIntent.addCategory(Intent.CATEGORY_OPENABLE);
+                galleryIntent.setType("image/*");
+
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+                    File photo = null;
+                    try {
+                        photo = generatePhotoFile();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if (photo != null) {
+                        Uri uri = FileProvider.getUriForFile(LecturesActivity.this,
+                                BuildConfig.APPLICATION_ID + ".provider",
+                                photo);
+
+                        photoFile = photo;
+                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                        intentList.add(cameraIntent);
+                    }
+                }
+
+
+                intentList.add(galleryIntent);
+
+                Intent chooserIntent = Intent.createChooser(new Intent(), "Select source");
+                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentList.toArray(new Parcelable[intentList.size()]));
+
+                startActivityForResult(chooserIntent, 1);
 
             }
         });
+    }
 
-
+    private File generatePhotoFile() throws IOException {
+        String dateTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        String name = "JPEG_" + dateTime + "_";
+        File file = File.createTempFile(name, ".jpg", getExternalFilesDir(Environment.DIRECTORY_PICTURES));
+        return file;
     }
 
     private void playSpeech() {
-        if (lectures.size()>0) {
+        if (lectures.size() > 0) {
             if (activeLecture == null) {
                 activateLectureAtPos(0);
             }
             if (activeLecture != null) {
-                Speech.getInstance().say(activeLecture.getContent(),new TextToSpeechCallback() {
+                Speech.getInstance().say(activeLecture.getContent(), new TextToSpeechCallback() {
                     @Override
                     public void onStart() {
                         playButton.setImageResource(android.R.drawable.ic_media_pause);
-                        speaking =true;
+                        speaking = true;
                         Log.i("speech", "speech started");
                     }
 
@@ -175,8 +213,6 @@ public class LecturesActivity extends AppCompatActivity {
                                     Log.d(TAG, "onSuccess: " + firebaseVisionText.getText());
                                     //translatedTextView.setText("");
                                     //translatedTextView.setText(firebaseVisionText.getText());
-                                    //Speech.getInstance().say(firebaseVisionText.getText());
-                                    //addNewLecture(firebaseVisionText.getText(), "27.11.1994");
                                     showNameDialog(LecturesActivity.this, firebaseVisionText.getText());
                                 }
                             })
@@ -216,7 +252,7 @@ public class LecturesActivity extends AppCompatActivity {
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        if (item.getItemId()==R.id.menu1){
+                        if (item.getItemId() == R.id.menu1) {
                             db.removeLecture(lectures.get(pos));
                             updateList();
                         }
@@ -229,7 +265,6 @@ public class LecturesActivity extends AppCompatActivity {
 
 
     }
-
 
 
     private void initDB() {
@@ -248,7 +283,6 @@ public class LecturesActivity extends AppCompatActivity {
         }
         lectureAdapter.notifyDataSetChanged();
     }
-
 
 
     private void addNewLecture(String name, String content) {
@@ -274,22 +308,28 @@ public class LecturesActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        String picReference = "";
         try {
             if (resultCode == RESULT_OK) {
                 if (requestCode == 1) {
-                    Log.d(TAG, "onActivityResult: Image selected");
-                    selectedImageUri = data.getData();
-                    Log.d(TAG, "onActivityResult: " + selectedImageUri.toString());
-                    //selectedImageDisplay.setImageURI(null);
-                    //selectedImageDisplay.setImageURI(selectedImageUri);
-                    Log.d(TAG, "onClick: image set!");
-                    //fileInfoText.setText("File selected: " + selectedImageUri.getPath());
-                    Toast.makeText(this, "File added: " + selectedImageUri.getPath(),
+                    if (data!= null) {
+                        Log.d(TAG, "onActivityResult: Image selected");
+                        selectedImageUri = data.getData();
+
+                        picReference =""+selectedImageUri.getPath();
+
+                        imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
+                    } else {
+                        imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.fromFile(photoFile));
+                        picReference = ""+ photoFile.getName();
+                    }
+                    Toast.makeText(this, "Converting " + picReference + "...",
                             Toast.LENGTH_SHORT).show();
 
-                    imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
                     convert();
                 }
+            } else {
+                Log.d(TAG, "onActivityResult: resolutCode not ok. it is " + resultCode);
             }
         } catch (Exception e) {
             Log.e(TAG, "File select error", e);

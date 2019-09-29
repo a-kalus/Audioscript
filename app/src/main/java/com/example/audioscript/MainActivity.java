@@ -1,6 +1,8 @@
 package com.example.audioscript;
 
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,9 +10,12 @@ import android.content.Intent;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuInflater;
@@ -28,6 +33,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import net.gotev.speech.Speech;
 
 import java.util.ArrayList;
+
+import static java.security.AccessController.getContext;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -48,6 +55,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+           
+        }else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA},
+                    1);
+        }
+
 
         final FloatingActionButton playButton = (FloatingActionButton) findViewById(R.id.playSpeechButton);
         final FloatingActionButton openImage = (FloatingActionButton) findViewById(R.id.openImageButton);
