@@ -11,7 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
-
+/*
+ * Adapter class for the population of the Lectures Activities' RecyclerView
+ */
 public class LectureAdapter extends RecyclerView.Adapter<LectureAdapter.ViewHolder> {
     private LayoutInflater inflater;
     private List<LectureItem> lectureList;
@@ -25,29 +27,21 @@ public class LectureAdapter extends RecyclerView.Adapter<LectureAdapter.ViewHold
         lectureList = list;
     }
 
-    public LectureAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    @NonNull
+    public LectureAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View lectureView = inflater.inflate(R.layout.list_item, parent, false);
 
-        ViewHolder viewHolder = new ViewHolder(lectureView);
-        return viewHolder;
+        return new ViewHolder(lectureView);
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
-    {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView name;
         TextView date;
 
         public ViewHolder(View v) {
             super(v);
-/*
-            v.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d("RecyclerView", "onClick：" + getAdapterPosition());
-                }
-            });
-*/          v.setOnClickListener(this);
+            v.setOnClickListener(this);
             name = (TextView) v.findViewById(R.id.item_name);
             date = (TextView) v.findViewById(R.id.item_date);
             ImageButton moreButton = (ImageButton) v.findViewById(R.id.options_btn);
@@ -67,10 +61,10 @@ public class LectureAdapter extends RecyclerView.Adapter<LectureAdapter.ViewHold
         }
     }
 
-    public void setOnItemClickListener(ItemClickListener itemClickListener){
+    public void setOnItemClickListener(ItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
     }
-    
+
     @Override
     public void onBindViewHolder(@NonNull LectureAdapter.ViewHolder holder, int position) {
         LectureItem item = lectureList.get(position);

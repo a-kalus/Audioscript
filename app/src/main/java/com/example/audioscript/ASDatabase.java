@@ -24,14 +24,14 @@ public class ASDatabase {
     private static final String COURSES_TABLE = "courses";
     private static final String LECTURE_COURSES_TABLE = "lecture_courses";
 
-    public static final String KEY_ID = "_id";
-    public static final String KEY_LECTURE_NAME = "lectureName";
-    public static final String KEY_DATE = "date";
-    public static final String KEY_CONTENT = "content";
+    private static final String KEY_ID = "_id";
+    private static final String KEY_LECTURE_NAME = "lectureName";
+    private static final String KEY_DATE = "date";
+    private static final String KEY_CONTENT = "content";
 
-    public static final int COLUMN_LECTURE_NAME_INDEX = 1;
-    public static final int COLUMN_DATE_INDEX = 3;
-    public static final int COLUMN_CONTENT_INDEX = 2;
+    private static final int COLUMN_LECTURE_NAME_INDEX = 1;
+    private static final int COLUMN_DATE_INDEX = 3;
+    private static final int COLUMN_CONTENT_INDEX = 2;
 
     private static final String KEY_COURSE_NAME = "course_name";
 
@@ -59,6 +59,8 @@ public class ASDatabase {
         db.close();
     }
 
+
+    //create an new entry in the lecture table
     public long insertLecture(LectureItem item, long course_id) {
         ContentValues newLectureValues = new ContentValues();
 
@@ -74,7 +76,7 @@ public class ASDatabase {
         return lecture_id;
 
     }
-
+    //store the assignment of a lecture to its course
     public long insertLectureCourse(long lecture_id, long course_id, String date) {
         ContentValues values = new ContentValues();
         values.put(KEY_LECTURE_ID, lecture_id);
@@ -84,12 +86,12 @@ public class ASDatabase {
         return db.insert(LECTURE_COURSES_TABLE, null, values);
     }
 
+    //create a new entry in the Course table
     public long insertCourse(Course course) {
 
         ContentValues values = new ContentValues();
         values.put(KEY_COURSE_NAME, course.getCourseName());
         values.put(KEY_DATE, String.valueOf(new Date()));
-
 
         return db.insert(COURSES_TABLE, null, values);
     }

@@ -11,7 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
-
+/*
+ * Adapter class for the population of the Course Overview's RecyclerView
+ */
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder> {
     private LayoutInflater inflater;
     private List<Course> courseList;
@@ -19,18 +21,18 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
     private ItemClickListener itemClickListener;
 
 
-    public CourseAdapter(Context context, List list) {
+    CourseAdapter(Context context, List list) {
         inflater = LayoutInflater.from(context);
         this.context = context;
         courseList = list;
     }
 
-    public CourseAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    @NonNull
+    public CourseAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View lectureView = inflater.inflate(R.layout.list_item, parent, false);
 
-        ViewHolder viewHolder = new ViewHolder(lectureView);
-        return viewHolder;
+        return new ViewHolder(lectureView);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -54,7 +56,6 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
 
         @Override
         public void onClick(View view) {
-            //Log.d("RecyclerView", "onClick：" + getAdapterPosition());
             itemClickListener.onItemClick(getAdapterPosition());
 
         }
@@ -67,9 +68,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull CourseAdapter.ViewHolder holder, int position) {
         Course course = courseList.get(position);
-
         holder.name.setText(course.getCourseName());
-
     }
 
     @Override

@@ -93,7 +93,7 @@
                     android:layout_width="220dp"
                     android:layout_height="match_parent"
                     android:layout_marginTop="12dp"
-                    android:text="No file selected!"
+                    android:text="@string/no_file_hint"
                     android:singleLine="true"
                     android:textAlignment="center"
                     android:textColor="@color/common_google_signin_btn_text_dark"

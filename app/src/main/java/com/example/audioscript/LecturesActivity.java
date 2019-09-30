@@ -46,6 +46,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 public class LecturesActivity extends AppCompatActivity {
 
@@ -55,10 +56,8 @@ public class LecturesActivity extends AppCompatActivity {
 
     private Course activeCourse;
 
-
     private ASDatabase db;
 
-    private Uri selectedImageUri;
     private Bitmap imageBitmap;
     private static final String TAG = "12345";
     private TextView fileInfoText;
@@ -72,7 +71,6 @@ public class LecturesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lecture_list_activity);
 
-
         activeCourse = (Course) getIntent().getSerializableExtra("course");
 
         setupView();
@@ -84,7 +82,7 @@ public class LecturesActivity extends AppCompatActivity {
     }
 
     private File generatePhotoFile() throws IOException {
-        String dateTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        String dateTime = new SimpleDateFormat("yyyyMMddHHmmss", Locale.US).format(new Date());
         String name = "JPEG_" + dateTime + "_";
         File file = File.createTempFile(name, ".jpg", getExternalFilesDir(Environment.DIRECTORY_PICTURES));
         return file;
@@ -145,7 +143,13 @@ public class LecturesActivity extends AppCompatActivity {
             }
         });
 
-        openImage.setOnClickListener(new View.OnClickListener() {
+        openImage.setOnClickListener(openImageClickListener());
+
+    }
+
+    // prepares the intents and starts the File Chooser on click
+    private View.OnClickListener openImageClickListener() {
+        return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 List<Intent> intentList = new ArrayList();
@@ -178,8 +182,7 @@ public class LecturesActivity extends AppCompatActivity {
                 startActivityForResult(chooserIntent, 1);
 
             }
-        });
-
+        };
     }
 
     private void activateLectureAtPos(int position) {
@@ -188,7 +191,10 @@ public class LecturesActivity extends AppCompatActivity {
             fileInfoText.setText(activeLecture.getName());
         }
     }
-
+    /*
+     *Responsible for the Optical Character Recognition.
+     * Converts the Image Bitmap to text by accessing the Firebase ML API
+     */
     private void convert() {
         if (imageBitmap != null) {
 
@@ -218,7 +224,11 @@ public class LecturesActivity extends AppCompatActivity {
             Log.d(TAG, "onClick: no image selected");
         }
     }
-
+    /*
+     *Sets the lecture adapter up and defines clicklisteners inside the RecyclerView:
+     * A Click on a entry starts the playback of its content
+     * and a click on the options button on the right of the lecture enables the deletion of that entry
+     */
     private void initLectureAdapter() {
 
         lectureAdapter = new LectureAdapter(this, lectures);
@@ -262,7 +272,6 @@ public class LecturesActivity extends AppCompatActivity {
     }
 
     private void updateList() {
-        Log.d("updatelist", "Course：" + activeCourse);
         lectures.clear();
         if (activeCourse.getCourseName() == null) {
             lectures.addAll(db.getAllLectures());
@@ -272,7 +281,11 @@ public class LecturesActivity extends AppCompatActivity {
         lectureAdapter.notifyDataSetChanged();
     }
 
-
+    /*
+     *calls database to store the lecture name and content
+     * along with the course assignment and the current date.
+     * Updates the Recyclerview.
+     */
     private void addNewLecture(String name, String content) {
 
         Date dueDate = new Date();
@@ -293,6 +306,8 @@ public class LecturesActivity extends AppCompatActivity {
                 Toast.LENGTH_SHORT).show();
     }
 
+
+    //Processes the result of the File Chooser intent and starts Conversion
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -302,7 +317,7 @@ public class LecturesActivity extends AppCompatActivity {
                 if (requestCode == 1) {
                     if (data != null && data.getData() != null) {
                         Log.d(TAG, "onActivityResult: Image selected " + data.getData());
-                        selectedImageUri = data.getData();
+                        Uri selectedImageUri = data.getData();
 
                         picReference = "" + selectedImageUri.getPath();
 
@@ -323,7 +338,7 @@ public class LecturesActivity extends AppCompatActivity {
             Log.e(TAG, "File select error", e);
         }
     }
-
+    //asks the user to name the lecture and calls addNewLecture() to store the answer
     private void showNameDialog(Context c, final String content) {
         final EditText nameLecture = new EditText(c);
         AlertDialog dialog = new AlertDialog.Builder(c)

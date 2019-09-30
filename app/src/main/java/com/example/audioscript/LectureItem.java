@@ -7,8 +7,6 @@ import java.util.Locale;
 
 public class LectureItem implements Comparable<LectureItem> {
 
-
-
     private String name;
     private String content;
     private GregorianCalendar cal;

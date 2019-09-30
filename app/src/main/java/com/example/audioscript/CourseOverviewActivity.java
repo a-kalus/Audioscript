@@ -30,7 +30,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-
+/*
+ * Start Activity where the user can select an existing course or add a new one by hitting the action button
+ */
 public class CourseOverviewActivity extends AppCompatActivity {
 
     private ArrayList<Course> courses = new ArrayList();
@@ -52,6 +54,7 @@ public class CourseOverviewActivity extends AppCompatActivity {
 
     }
 
+    //checks if the app is allowed to access the camera and asks the user for permission if not
     private void checkForCameraPermission() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -70,12 +73,15 @@ public class CourseOverviewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 showAddCourseDialog(CourseOverviewActivity.this);
-
             }
         });
     }
 
-
+    /*
+     *Sets the course adapter up and defines clicklisteners inside the RecyclerView:
+     * A Click on a Course Item starts the Lectures Activity
+     * and a click on the options button inside the item enables the deletion of that entry
+     */
     private void initCourseAdapter() {
 
         courseAdapter = new CourseAdapter(this, courses);
@@ -85,8 +91,6 @@ public class CourseOverviewActivity extends AppCompatActivity {
         courseAdapter.setOnItemClickListener(new ItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Log.d("RecyclerView", "onClick：" + courses.get(position));
-
                 Course c = courses.get(position);
                 Intent intent = new Intent(CourseOverviewActivity.this, LecturesActivity.class);
                 intent.putExtra("course", c);
@@ -125,9 +129,8 @@ public class CourseOverviewActivity extends AppCompatActivity {
         courseAdapter.notifyDataSetChanged();
     }
 
-
+    //calls database to store course and updates the Recyclerview
     private void addNewCourse(String name) {
-
         Course newCourse = new Course(name);
 
         db.insertCourse(newCourse);
@@ -136,7 +139,7 @@ public class CourseOverviewActivity extends AppCompatActivity {
                 Toast.LENGTH_SHORT).show();
     }
 
-
+    //asks the user to name the course and calls addNewCourse() to store the answer
     private void showAddCourseDialog(Context c) {
         final EditText nameLecture = new EditText(c);
         AlertDialog dialog = new AlertDialog.Builder(c)
