@@ -5,7 +5,12 @@
 Android 4.3 or higher
 
 # User Manual
-In the main menu the user can select an existing course or add a new one by hitting the action button.
-![Image of Course Overview](sreenshots/Course_Overview.png)
-After a course was selected the user can play back the containing lessons or add a new file (from gallery or camera) to that course.
-![Image of Course Overview](sreenshots/Player_Lecture_List.png)
+In the main menu the user can select an existing course or add a new one by hitting the action button: /n
+<p align="center">
+<img src="screenshots/Course_Overview.png" width="250">
+</p>
+
+After a course was selected the user can play back the containing lessons or add a new file (from gallery or camera) to that course:
+<p align="center">
+<img src="screenshots/Player_Lecture_List.png" width="250">
+</p>
