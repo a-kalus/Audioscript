@@ -28,7 +28,6 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/titleTextField"
             android:layout_marginHorizontal="12dp"
             android:layout_marginTop="15dp">
 
