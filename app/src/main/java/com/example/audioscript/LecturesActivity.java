@@ -127,6 +127,8 @@ public class LecturesActivity extends AppCompatActivity {
 
     private void setupView() {
         fileInfoText = (TextView) findViewById(R.id.fileSelectedInfoText);
+        TextView courseName = (TextView) findViewById(R.id.course_name);
+        courseName.setText(""+activeCourse.getCourseName());
         lectureListView = (RecyclerView) findViewById(R.id.lecture_list);
         lectureListView.setHasFixedSize(true);
         playButton = (FloatingActionButton) findViewById(R.id.playSpeechButton);
@@ -298,16 +300,16 @@ public class LecturesActivity extends AppCompatActivity {
         try {
             if (resultCode == RESULT_OK) {
                 if (requestCode == 1) {
-                    if (data!= null&&data.getData()!=null) {
-                        Log.d(TAG, "onActivityResult: Image selected "+data.getData());
+                    if (data != null && data.getData() != null) {
+                        Log.d(TAG, "onActivityResult: Image selected " + data.getData());
                         selectedImageUri = data.getData();
 
-                        picReference =""+selectedImageUri.getPath();
+                        picReference = "" + selectedImageUri.getPath();
 
                         imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
                     } else {
                         imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.fromFile(photoFile));
-                        picReference = ""+ photoFile.getName();
+                        picReference = "" + photoFile.getName();
                     }
                     Toast.makeText(this, "Converting " + picReference + "...",
                             Toast.LENGTH_SHORT).show();
