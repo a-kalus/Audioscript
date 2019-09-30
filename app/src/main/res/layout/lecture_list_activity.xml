@@ -15,7 +15,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        tools:context=".CourseOverviewActivity">
 
         <FrameLayout
             android:id="@android:id/tabcontent"
@@ -33,19 +33,7 @@
             android:layout_marginTop="15dp">
 
 
-
-
-            <TextView
-                android:id="@+id/translatedTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text= ""
-                android:layout_below="@+id/logoImageDisplay"
-                android:animateLayoutChanges="true"
-                android:fontFamily="sans-serif-light" />
-
             <FrameLayout
-                android:id="@android:id/tabcontent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"

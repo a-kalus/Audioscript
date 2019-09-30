@@ -15,7 +15,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,9 +61,6 @@ public class LecturesActivity extends AppCompatActivity {
     private Uri selectedImageUri;
     private Bitmap imageBitmap;
     private static final String TAG = "12345";
-    private ImageView selectedImageDisplay;
-    private String resultText;
-    private TextView translatedTextView;
     private TextView fileInfoText;
     private RecyclerView lectureListView;
     private FloatingActionButton playButton;
@@ -76,8 +72,7 @@ public class LecturesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lecture_list_activity);
 
-        playButton = (FloatingActionButton) findViewById(R.id.playSpeechButton);
-        final FloatingActionButton openImage = (FloatingActionButton) findViewById(R.id.openImageButton);
+
         activeCourse = (Course) getIntent().getSerializableExtra("course");
 
         setupView();
@@ -85,58 +80,7 @@ public class LecturesActivity extends AppCompatActivity {
         initDB();
         initLectureAdapter();
         updateList();
-        playButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!speaking) {
-                    playSpeech();
-                } else {
-                    Speech.getInstance().stopTextToSpeech();
-                    onSpeechStop();
-                }
-            }
-        });
 
-        openImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //debug
-                Log.d(TAG, "onClick: selecting image");
-
-                List<Intent> intentList = new ArrayList();
-                Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
-                galleryIntent.addCategory(Intent.CATEGORY_OPENABLE);
-                galleryIntent.setType("image/*");
-
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (cameraIntent.resolveActivity(getPackageManager()) != null) {
-                    File photo = null;
-                    try {
-                        photo = generatePhotoFile();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    if (photo != null) {
-                        Uri uri = FileProvider.getUriForFile(LecturesActivity.this,
-                                BuildConfig.APPLICATION_ID + ".provider",
-                                photo);
-
-                        photoFile = photo;
-                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-                        intentList.add(cameraIntent);
-                    }
-                }
-
-
-                intentList.add(galleryIntent);
-
-                Intent chooserIntent = Intent.createChooser(new Intent(), "Select source");
-                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentList.toArray(new Parcelable[intentList.size()]));
-
-                startActivityForResult(chooserIntent, 1);
-
-            }
-        });
     }
 
     private File generatePhotoFile() throws IOException {
@@ -182,11 +126,57 @@ public class LecturesActivity extends AppCompatActivity {
     }
 
     private void setupView() {
-        selectedImageDisplay = (ImageView) findViewById(R.id.logoImageDisplay);
-        translatedTextView = (TextView) findViewById(R.id.translatedTextView);
         fileInfoText = (TextView) findViewById(R.id.fileSelectedInfoText);
         lectureListView = (RecyclerView) findViewById(R.id.lecture_list);
         lectureListView.setHasFixedSize(true);
+        playButton = (FloatingActionButton) findViewById(R.id.playSpeechButton);
+        final FloatingActionButton openImage = (FloatingActionButton) findViewById(R.id.openImageButton);
+        playButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!speaking) {
+                    playSpeech();
+                } else {
+                    Speech.getInstance().stopTextToSpeech();
+                    onSpeechStop();
+                }
+            }
+        });
+
+        openImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<Intent> intentList = new ArrayList();
+                Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                galleryIntent.addCategory(Intent.CATEGORY_OPENABLE);
+                galleryIntent.setType("image/*");
+
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+                    File photo = null;
+                    try {
+                        photo = generatePhotoFile();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if (photo != null) {
+                        Uri uri = FileProvider.getUriForFile(LecturesActivity.this,
+                                BuildConfig.APPLICATION_ID + ".provider",
+                                photo);
+
+                        photoFile = photo;
+                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                        intentList.add(cameraIntent);
+                    }
+                }
+                intentList.add(galleryIntent);
+                Intent chooserIntent = Intent.createChooser(new Intent(), "Select source");
+                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentList.toArray(new Parcelable[intentList.size()]));
+
+                startActivityForResult(chooserIntent, 1);
+
+            }
+        });
 
     }
 
@@ -209,10 +199,7 @@ public class LecturesActivity extends AppCompatActivity {
                             .addOnSuccessListener(new OnSuccessListener<FirebaseVisionText>() {
                                 @Override
                                 public void onSuccess(FirebaseVisionText firebaseVisionText) {
-                                    Log.d(TAG, "onSuccess: Image read sucessfully");
                                     Log.d(TAG, "onSuccess: " + firebaseVisionText.getText());
-                                    //translatedTextView.setText("");
-                                    //translatedTextView.setText(firebaseVisionText.getText());
                                     showNameDialog(LecturesActivity.this, firebaseVisionText.getText());
                                 }
                             })
@@ -220,7 +207,8 @@ public class LecturesActivity extends AppCompatActivity {
                                     new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
-                                            Log.d(TAG, "onFailure: Error while reading image");
+                                            Toast.makeText(LecturesActivity.this, "Error while reading image. ",
+                                                    Toast.LENGTH_SHORT).show();
                                         }
                                     });
 
@@ -239,7 +227,6 @@ public class LecturesActivity extends AppCompatActivity {
             @Override
             public void onItemClick(int position) {
                 Log.d("RecyclerView", "onClick：" + lectures.get(position));
-                // Speech.getInstance().say(lectures.get(position).getContent());
                 activateLectureAtPos(position);
                 playSpeech();
             }
@@ -252,7 +239,7 @@ public class LecturesActivity extends AppCompatActivity {
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        if (item.getItemId() == R.id.menu1) {
+                        if (item.getItemId() == R.id.delete) {
                             db.removeLecture(lectures.get(pos));
                             updateList();
                         }
@@ -279,7 +266,6 @@ public class LecturesActivity extends AppCompatActivity {
             lectures.addAll(db.getAllLectures());
         } else {
             lectures.addAll(db.getAllLecturesOfCourse(activeCourse.getCourseName(), activeCourse.getId()));
-            Log.d("updatelist", "size of course named" + activeCourse + ": " + db.getAllLecturesOfCourse(activeCourse.getCourseName(), activeCourse.getId()).size());
         }
         lectureAdapter.notifyDataSetChanged();
     }
@@ -312,8 +298,8 @@ public class LecturesActivity extends AppCompatActivity {
         try {
             if (resultCode == RESULT_OK) {
                 if (requestCode == 1) {
-                    if (data!= null) {
-                        Log.d(TAG, "onActivityResult: Image selected");
+                    if (data!= null&&data.getData()!=null) {
+                        Log.d(TAG, "onActivityResult: Image selected "+data.getData());
                         selectedImageUri = data.getData();
 
                         picReference =""+selectedImageUri.getPath();
@@ -351,6 +337,7 @@ public class LecturesActivity extends AppCompatActivity {
                 })
                 .setNegativeButton("Cancel", null)
                 .create();
+        dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
 

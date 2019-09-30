@@ -2,15 +2,12 @@ package com.example.audioscript;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -30,7 +27,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
 
     public CourseAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View lectureView = inflater.inflate(R.layout.listitem_lectures, parent, false);
+        View lectureView = inflater.inflate(R.layout.list_item, parent, false);
 
         ViewHolder viewHolder = new ViewHolder(lectureView);
         return viewHolder;
@@ -42,14 +39,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
 
         public ViewHolder(final View v) {
             super(v);
-/*
-            v.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d("RecyclerView", "onClick：" + getAdapterPosition());
-                }
-            });
-*/
+
             v.setOnClickListener(this);
             name = (TextView) v.findViewById(R.id.item_name);
             moreButton = (ImageButton) v.findViewById(R.id.options_btn);

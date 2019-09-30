@@ -27,7 +27,7 @@ public class LectureAdapter extends RecyclerView.Adapter<LectureAdapter.ViewHold
 
     public LectureAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View lectureView = inflater.inflate(R.layout.listitem_lectures, parent, false);
+        View lectureView = inflater.inflate(R.layout.list_item, parent, false);
 
         ViewHolder viewHolder = new ViewHolder(lectureView);
         return viewHolder;
